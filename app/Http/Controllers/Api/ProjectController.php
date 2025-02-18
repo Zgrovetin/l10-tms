@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Project;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Collection
     {
-        //
+        return Project::all();
     }
 
     /**
@@ -20,15 +22,24 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $project = Project::create([
+            ...$request->validate([
+                'name' =>  'required|string|max:255',
+                'description' =>  'nullable|string',
+                'due_date' =>  'nullable|date|after:now'
+            ])
+        ]);
+
+        return $project;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Project $project): Project
     {
-        //
+        return $project;
     }
 
     /**
